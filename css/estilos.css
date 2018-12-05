@@ -1,0 +1,7 @@
+/*
+    los td no tendran bordes
+*/
+#tablero td{
+    border: 0;
+    padding: 5;
+}
