@@ -98,33 +98,87 @@ var Peca = function(forma, color, posicioX, posicioY){
     this.posicioX = posicioX;
     this.posicioY = posicioY;
 }
+ 
+//Funcion que desplazara la pieza a la derecha
+Peca.prototype.moverDerecha = function(){
+    if( (x-1) > 0){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Funcion que desplazara la pieza a la izquierda
+Peca.prototype.moverIzqueirda = function(){
+    if( (x+1) < 14 ){
+        x++;
+        return true;
+    }else{
+        return false;
+    }
+}
+
+//Pintamos la pieza
+Peca.prototype.pintarPieza = function(){
+    var resultat = "<table border='1'>";
+    for (var i = 0; i < this.forma.length;i++){
+        resultat = resultat + "<tr>"
+        for (var j = 0; j<this.forma[i].length;j++) { 
+            resultat = resultat + "<td>";
+            if (this.forma[i][j]==1) { 
+                resultat=resultat+"1" 
+            }
+            else { 
+                resultat = resultat + "0" 
+            };
+            resultat = resultat + "</td>";
+        }
+        resultat = resultat + "</tr>";
+    }
+    resultat = resultat + "</table>";
+    return resultat
+}; 
 //Generamos una pieza aleatoria
 var piezaAleatoria = GeneraPecaAleatoria();
-//Creamos una pieza
-var p = new Peca()
+var pieza = new Peca(piezaAleatoria[0], piezaAleatoria[1]);
+
 Peca.prototype.rotarSentitHorari = function(){
-    var moverDerecha = new Array();
-    for(var iteracion = 0; iteracion < this.forma.length; iteracion++){
-        moverDerecha[iteracion] = new Array();
-        for(var j = 0; j < this.forma[iteracion].length; j++){
-            moverDerecha[iteracion][j] = this.forma[this.forma[iteracion].length-1-j][i];
+    var formaNova = new Array();
+    for (var i=0;i<this.forma.length;i++) {
+        formaNova[i]=new Array();
+        for (var j=0;j<this.forma[i].length;j++) {
+            formaNova[i][j]=this.forma[this.forma[i].length-1-j][i];
         }
     }
-    this.forma = moverDerecha;
+    this.forma = formaNova;
 }
+
 Peca.prototype.rotarAntiHorari = function(){
     //Llamamos a la funcion de girar a la derecha 3 veces que equivaldria a que si lo giramos a la izquierda
     this.rotarSentitHorari();
     this.rotarSentitHorari();
     this.rotarSentitHorari();
 }
+pieza.rotarAntiHorari();
 Peca.prototype.moureAvall = function(){}
 Peca.prototype.formaPeca = function(){}
 
+//Creamos una pieza
+var p = new Peca();
+
 //Mostrem per pantalla l'espai de joc
 $(document).ready(function(){
-    console.log(jocTetris.espai);
-    
+    //Mostramos la pieza originalmente
+    document.getElementById("original").innerHTML = pieza.pintarPieza();
+    //Giramos la pieza
+    pieza.rotarSentitHorari();
+    //Mostramos la pieza girada
+    document.getElementById("girada").innerHTML = pieza.pintarPieza();
+
+    //Giramos la pieza en sentido antihorario
+    pieza.rotarAntiHorari();
+
+    //Pintamos el tablero
     for(var i = 0; i < jocTetris.espai.length; i++){
         $("#tablero").append("<tr>");
         for(var j = 0; j < jocTetris.espai[i].length; j++){
@@ -132,4 +186,9 @@ $(document).ready(function(){
         }
         $("#tablero").append("</tr>")
     }
+    //Pintamos las piezas del color al que pertenecen
+    if(pieza.color == "verd"){
+        
+    }
+    console.log(pieza);
 });

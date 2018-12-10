@@ -5,3 +5,16 @@
     border: 0;
     padding: 5;
 }
+#original, #girada{
+    display: inline-block;
+}
+#original{
+    border: 1px solid red;
+}
+#girada{
+    border: 1px solid blue;
+}
+#tablero{
+    display: inline-block;
+    background: rgba(128,128,128,0.3);
+}
