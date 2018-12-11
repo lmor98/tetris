@@ -75,7 +75,7 @@ var jocTetris = {
 
 //Creamos una variable donde guardaremos lo que nos devuelva la funcion para calcular de forma aleatoria la siguiente pieza
 function GeneraPecaAleatoria (){ 
-    { 
+
     var peces = [
             [[[0,0,0,0],[0,1,1,0],[0,1,1,0],[0,0,0,0]],"groc"],
             [[[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]],"lila"],
@@ -89,7 +89,7 @@ function GeneraPecaAleatoria (){
     var numeroAleatori = Math.round(Math.random()*6);                      
     return peces[numeroAleatori];     
     }    
-}
+
 
 //Creamos el objeto piezas
 var Peca = function(forma, color, posicioX, posicioY){
@@ -98,6 +98,9 @@ var Peca = function(forma, color, posicioX, posicioY){
     this.posicioX = posicioX;
     this.posicioY = posicioY;
 }
+//Generamos una pieza aleatoria
+var piezaAleatoria = GeneraPecaAleatoria();
+var pieza = new Peca(piezaAleatoria[0], piezaAleatoria[1]);
  
 //Funcion que desplazara la pieza a la derecha
 Peca.prototype.moverDerecha = function(){
@@ -138,9 +141,6 @@ Peca.prototype.pintarPieza = function(){
     resultat = resultat + "</table>";
     return resultat
 }; 
-//Generamos una pieza aleatoria
-var piezaAleatoria = GeneraPecaAleatoria();
-var pieza = new Peca(piezaAleatoria[0], piezaAleatoria[1]);
 
 Peca.prototype.rotarSentitHorari = function(){
     var formaNova = new Array();
@@ -160,11 +160,15 @@ Peca.prototype.rotarAntiHorari = function(){
     this.rotarSentitHorari();
 }
 pieza.rotarAntiHorari();
-Peca.prototype.moureAvall = function(){}
+Peca.prototype.moureAvall = function(posicioY){
+    //Esto hara que la pieza se desplace hacia abajo
+    this.posicioY--;
+}
 Peca.prototype.formaPeca = function(){}
 
 //Creamos una pieza
-var p = new Peca();
+var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 5, 25);
+console.log(p);
 
 //Mostrem per pantalla l'espai de joc
 $(document).ready(function(){
@@ -186,9 +190,4 @@ $(document).ready(function(){
         }
         $("#tablero").append("</tr>")
     }
-    //Pintamos las piezas del color al que pertenecen
-    if(pieza.color == "verd"){
-        
-    }
-    console.log(pieza);
 });
