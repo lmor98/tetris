@@ -101,9 +101,14 @@ var Peca = function(forma, color, posicioX, posicioY){
 //Generamos una pieza aleatoria
 var piezaAleatoria = GeneraPecaAleatoria();
 var pieza = new Peca(piezaAleatoria[0], piezaAleatoria[1]);
+
+//Creamos una pieza
+var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 5, 25);
+console.log(p);
  
 //Funcion que desplazara la pieza a la derecha
 Peca.prototype.moverDerecha = function(){
+    //Comprobamos que al mover la pieza a la derecha no se salga del tablero
     if( (x-1) > 0){
         return true;
     }else{
@@ -113,6 +118,7 @@ Peca.prototype.moverDerecha = function(){
 
 //Funcion que desplazara la pieza a la izquierda
 Peca.prototype.moverIzqueirda = function(){
+    //Comprobamos que al mover la pieza a la izquierda no se salga del tablero
     if( (x+1) < 14 ){
         x++;
         return true;
@@ -142,12 +148,15 @@ Peca.prototype.pintarPieza = function(){
     return resultat
 }; 
 
+//Funcion que rotara la pieza en sentido horario
 Peca.prototype.rotarSentitHorari = function(){
+    //Creamos un array para guardar la nueva forma
     var formaNova = new Array();
-    for (var i=0;i<this.forma.length;i++) {
-        formaNova[i]=new Array();
-        for (var j=0;j<this.forma[i].length;j++) {
-            formaNova[i][j]=this.forma[this.forma[i].length-1-j][i];
+    //Recorremos el array de la forma de la pieza
+    for (var i = 0; i < this.forma.length; i++) {
+        formaNova[i] = new Array();
+        for (var j = 0; j < this.forma[i].length; j++) {
+            formaNova[i][j] = this.forma[this.forma[i].length-1-j][i];
         }
     }
     this.forma = formaNova;
@@ -160,15 +169,14 @@ Peca.prototype.rotarAntiHorari = function(){
     this.rotarSentitHorari();
 }
 pieza.rotarAntiHorari();
+
+//Funcion para hacer que la pieza baje
 Peca.prototype.moureAvall = function(posicioY){
     //Esto hara que la pieza se desplace hacia abajo
     this.posicioY--;
 }
 Peca.prototype.formaPeca = function(){}
 
-//Creamos una pieza
-var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 5, 25);
-console.log(p);
 
 //Mostrem per pantalla l'espai de joc
 $(document).ready(function(){
