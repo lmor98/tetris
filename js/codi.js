@@ -69,10 +69,17 @@ var jocTetris = {
         seguentPeca = new Peca(piezaAleatoria[0], piezaAleatoria[1], 5, 5);
         comptadorPeca = 0;
         nivell = 0;
-        intervarlTemps = 0; //Falta ampliar
+        intervarlTemps = 3*100; //Falta ampliar
+
         //Calcular de forma aleatoria la següent peça que baixara
         //Gestio de la interacció del teclat
         //Moviment automatic que sera el intervalo de timepo que ira bajando la piez
+        automatic = function(){
+            p.moureAvall();
+            //this.pintarPiezaTablero();
+
+        }
+        setInterval(function(){automatic();}, 3000);
 
     },
     pintarPiezaTablero: function(){
@@ -83,12 +90,28 @@ var jocTetris = {
                 //Comprobamos que esa pieza en esa columna y fila contenga un 1
                 if(pecaBajando.forma[i][j] == 1){
                     //Pintamos en el tablero esa pieza 
-                    espai[pecaBajando.posicioX + i][pecaBajando.posicioY + j] = 1;
+                    this.espai[pecaBajando.posicioX + i][pecaBajando.posicioY + j] = 1;
+                    
                 }
             }
         }
-    }
+    },
+
+    irAlaIzquierda: function(){},
+    irAlaDerecha: function(){}
 }
+
+//Creamos el objeto piezas
+var Peca = function(forma, color, posicioX, posicioY){
+    this.forma = forma;
+    this.color = color;
+    this.posicioX = posicioX;
+    this.posicioY = posicioY;
+}
+
+//Creamos una pieza
+var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 5, 25);
+//console.log(p);
 
 //Creamos una variable donde guardaremos lo que nos devuelva la funcion para calcular de forma aleatoria la siguiente pieza
 function GeneraPecaAleatoria (){ 
@@ -106,19 +129,6 @@ function GeneraPecaAleatoria (){
     var numeroAleatori = Math.round(Math.random()*6);                      
     return peces[numeroAleatori];     
 }    
-
-
-//Creamos el objeto piezas
-var Peca = function(forma, color, posicioX, posicioY){
-    this.forma = forma;
-    this.color = color;
-    this.posicioX = posicioX;
-    this.posicioY = posicioY;
-}
-
-//Creamos una pieza
-var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 5, 25);
-//console.log(p);
 
  
 //Funcion que desplazara la pieza a la derecha
@@ -196,36 +206,39 @@ Peca.prototype.rotarAntiHorari = function(){
 //Funcion para hacer que la pieza baje
 Peca.prototype.moureAvall = function(){
     //Esto hara que la pieza se desplace hacia abajo
-    this.posicioY--;
-    console.log(p)
+    console.log("llega")
+    p.posicioX--;
+    console.log(p);
+    jocTetris.pintarPiezaTablero()
+    
 }
 
-
+function tableroTetris(tablero){
+    for(var i = 0; i < tablero.length; i++){
+        $("#tablero").append("<tr>");
+        for(var j = 0; j < tablero[i].length; j++){
+            $("#tablero").append("<td>" + tablero[i][j] + "</td>");
+        }
+        $("#tablero").append("</tr>")
+    }
+}
 
 
 
 //Mostrem per pantalla l'espai de joc
 $(document).ready(function(){
     //Mostramos la pieza originalmente
-    //document.getElementById("original").innerHTML = pieza.pintarPieza();
+    document.getElementById("original").innerHTML = p.pintarPieza();
     //Giramos la pieza
     //pieza.rotarSentitHorari();
+    
     //Mostramos la pieza girada
-    //document.getElementById("girada").innerHTML = pieza.pintarPieza();
+    document.getElementById("girada").innerHTML = p.pintarPieza();
 
     //Giramos la pieza en sentido antihorario
     //pieza.rotarAntiHorari();
     jocTetris.inicialitzar();
-    jocTetris.pintarPiezaTablero();
-
-    //Pintamos el tablero
-    for(var i = 0; i < jocTetris.espai.length; i++){
-        $("#tablero").append("<tr>");
-        for(var j = 0; j < jocTetris.espai[i].length; j++){
-            $("#tablero").append("<td>" + jocTetris.espai[i][j] + "</td>");
-        }
-        $("#tablero").append("</tr>")
-    }
+    tableroTetris(jocTetris.espai);
 
     //Pintamos la puntuación
     var punts = $("#puntuacion");
@@ -238,4 +251,6 @@ $(document).ready(function(){
     //Pintamos el nivel del juego
     var lvl = $("#nivell");
     lvl.append(jocTetris.nivell);
+
+
 });
