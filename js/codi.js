@@ -89,8 +89,7 @@ var jocTetris = {
                 //Comprobamos que esa pieza en esa columna y fila contenga un 1
                 if(pecaBajando.forma[i][j] == 1){
                     //Pintamos en el tablero esa pieza 
-                    this.espai[pecaBajando.posicioX + i][pecaBajando.posicioY + j] = 1;
-                    
+                    this.espai[pecaBajando.posicioX + i][pecaBajando.posicioY + j] = 1;                    
                 }
             }
         }
@@ -209,9 +208,19 @@ Peca.prototype.rotarAntiHorari = function(){
 //Funcion para hacer que la pieza baje
 Peca.prototype.moureAvall = function(){
     tableroTetris(jocTetris.espai);
+    for(var i = 0; i < jocTetris.espai.length; i++){
+        for(var j = 0; j < jocTetris.espai[i].length; j++){
+            if(jocTetris.espai[i][j] == 1){
+                jocTetris.espai[i][j] = 0;
+            }
+        }
+    }
     //Esto hara que la pieza se desplace hacia abajo
     pecaBajando.posicioX++;
     console.log(jocTetris.espai);
+
+    //Capturamos las teclas de las direcciones
+    //Serviran para mover la pieza segun la tecla presionada
     window.addEventListener("keydown", function(event){
         this.console.log(event);
         switch(event.keyCode){
@@ -278,4 +287,6 @@ $(document).ready(function(){
     var lvl = $("#nivell");
     lvl.append(jocTetris.nivell);
 
+    console.log(p)
+    document.getElementById("prueba").innerHTML = p.pintarPieza();
 });
