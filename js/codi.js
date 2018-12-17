@@ -64,9 +64,9 @@ var jocTetris = {
         ]
         puntuacio = 0;
         var piezaAleatoria = GeneraPecaAleatoria();
-        pecaBajando = new Peca(piezaAleatoria[0], piezaAleatoria[1], 5, 5);
+        pecaBajando = new Peca(piezaAleatoria[0], piezaAleatoria[1], 0, 3);
         piezaAleatoria = GeneraPecaAleatoria();
-        seguentPeca = new Peca(piezaAleatoria[0], piezaAleatoria[1], 5, 5);
+        seguentPeca = new Peca(piezaAleatoria[0], piezaAleatoria[1], 20, 5);
         comptadorPeca = 0;
         nivell = 0;
         intervarlTemps = 3*100; //Falta ampliar
@@ -75,11 +75,10 @@ var jocTetris = {
         //Gestio de la interacció del teclat
         //Moviment automatic que sera el intervalo de timepo que ira bajando la piez
         automatic = function(){
-            p.moureAvall();
-            //this.pintarPiezaTablero();
+            pecaBajando.moureAvall();
 
         }
-        //setInterval(function(){automatic();}, 3000);
+        setInterval(function(){automatic();}, 3000);
 
     },
     pintarPiezaTablero: function(){
@@ -97,7 +96,9 @@ var jocTetris = {
         }
     },
 
-    irAlaIzquierda: function(){},
+    irAlaIzquierda: function(event){
+        console.log(event.keyCode);
+    },
     irAlaDerecha: function(){}
 }
 
@@ -110,7 +111,7 @@ var Peca = function(forma, color, posicioX, posicioY){
 }
 
 //Creamos una pieza
-var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 5, 25);
+var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 2, 20);
 //console.log(p);
 
 //Creamos una variable donde guardaremos lo que nos devuelva la funcion para calcular de forma aleatoria la siguiente pieza
@@ -205,16 +206,29 @@ Peca.prototype.rotarAntiHorari = function(){
 
 //Funcion para hacer que la pieza baje
 Peca.prototype.moureAvall = function(){
+    tableroTetris(jocTetris.espai);
     //Esto hara que la pieza se desplace hacia abajo
-    p.posicioX--;
-    console.log(p);
+    pecaBajando.posicioX++;
+    console.log(jocTetris.espai);
+    window.addEventListener("keydown", function(event){
+        this.console.log(event);
+        if(event.keyCode == 40){
+            this.console.log("entra");
+            //La pieza tiene que bajar tantas veces el usuario
+            //haya clicado hacia abajo  y sumarle puntos
+        }
+    });
+    
     
     //Pintamos la pieza en el tablero 
     jocTetris.pintarPiezaTablero();
+
     
 }
 
+
 function tableroTetris(tablero){
+    $("#tablero").empty();
     for(var i = 0; i < tablero.length; i++){
         $("#tablero").append("<tr>");
         for(var j = 0; j < tablero[i].length; j++){
@@ -231,7 +245,7 @@ $(document).ready(function(){
     //Mostramos la pieza originalmente
     document.getElementById("original").innerHTML = p.pintarPieza();
     //Giramos la pieza
-    //pieza.rotarSentitHorari();
+    p.rotarSentitHorari();
 
     //Mostramos la pieza girada
     document.getElementById("girada").innerHTML = p.pintarPieza();
@@ -241,6 +255,7 @@ $(document).ready(function(){
     jocTetris.inicialitzar();
     jocTetris.pintarPiezaTablero();
     tableroTetris(jocTetris.espai);
+    jocTetris.irAlaDerecha();
     
 
     //Pintamos la puntuación
