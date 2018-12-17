@@ -79,7 +79,7 @@ var jocTetris = {
             //this.pintarPiezaTablero();
 
         }
-        setInterval(function(){automatic();}, 3000);
+        //setInterval(function(){automatic();}, 3000);
 
     },
     pintarPiezaTablero: function(){
@@ -206,10 +206,11 @@ Peca.prototype.rotarAntiHorari = function(){
 //Funcion para hacer que la pieza baje
 Peca.prototype.moureAvall = function(){
     //Esto hara que la pieza se desplace hacia abajo
-    console.log("llega")
     p.posicioX--;
     console.log(p);
-    jocTetris.pintarPiezaTablero()
+    
+    //Pintamos la pieza en el tablero 
+    jocTetris.pintarPiezaTablero();
     
 }
 
@@ -231,14 +232,16 @@ $(document).ready(function(){
     document.getElementById("original").innerHTML = p.pintarPieza();
     //Giramos la pieza
     //pieza.rotarSentitHorari();
-    
+
     //Mostramos la pieza girada
     document.getElementById("girada").innerHTML = p.pintarPieza();
 
     //Giramos la pieza en sentido antihorario
     //pieza.rotarAntiHorari();
     jocTetris.inicialitzar();
+    jocTetris.pintarPiezaTablero();
     tableroTetris(jocTetris.espai);
+    
 
     //Pintamos la puntuación
     var punts = $("#puntuacion");
@@ -251,6 +254,5 @@ $(document).ready(function(){
     //Pintamos el nivel del juego
     var lvl = $("#nivell");
     lvl.append(jocTetris.nivell);
-
 
 });
