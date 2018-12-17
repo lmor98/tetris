@@ -134,6 +134,7 @@ function GeneraPecaAleatoria (){
  
 //Funcion que desplazara la pieza a la derecha
 Peca.prototype.moverDerecha = function(){
+    console.log("entra1");
     //Comprobamos que al mover la pieza a la derecha no se salga del tablero
     if( (x-1) > 0){
         return true;
@@ -144,6 +145,7 @@ Peca.prototype.moverDerecha = function(){
 
 //Funcion que desplazara la pieza a la izquierda
 Peca.prototype.moverIzqueirda = function(){
+    console.log("entra2");
     //Comprobamos que al mover la pieza a la izquierda no se salga del tablero
     if( (x+1) < 14 ){
         x++;
@@ -212,11 +214,17 @@ Peca.prototype.moureAvall = function(){
     console.log(jocTetris.espai);
     window.addEventListener("keydown", function(event){
         this.console.log(event);
-        if(event.keyCode == 40){
-            this.console.log("entra");
-            //La pieza tiene que bajar tantas veces el usuario
-            //haya clicado hacia abajo  y sumarle puntos
+        switch(event.keyCode){
+            case "40": //Abajo
+                break;
+            case "39": //Derecha
+                break;
+            case "38": //Arriba
+                break;
+            case "37": //Izqueirda
+                break;
         }
+        
     });
     
     
