@@ -32,7 +32,7 @@ var jocTetris = {
     pecaBajando: new Array(),
     seguentPeca: new Array(),
     comptadorPeca: 0,
-    intervarlTemps: 0, //Falta ampliar
+    intervarlTemps: 500, //Falta ampliar
     inicialitzar: function(){
         //Inicializamos los atributos a 0 por si queremos reiniciar el juego
         espai = [
@@ -69,18 +69,35 @@ var jocTetris = {
         seguentPeca = new Peca(piezaAleatoria[0], piezaAleatoria[1], 20, 5);
         comptadorPeca = 0;
         nivell = 0;
-        intervarlTemps = 3*100; //Falta ampliar
 
         //Calcular de forma aleatoria la següent peça que baixara
         //Gestio de la interacció del teclat
         //Moviment automatic que sera el intervalo de timepo que ira bajando la piez
-        automatic = function(){
-            pecaBajando.moureAvall();
-
-        }
-        setInterval(function(){automatic();}, 3000);
+        
+        setInterval(function(){jocTetris.automatic();}, jocTetris.intervarlTemps);
 
     },
+    automatic: function(){
+        //Hacemos que la pieza baje
+        pecaBajando.posicioX++;
+
+        //Pintamos el tablero con el espacio
+        tableroTetris(jocTetris.espai);
+
+        //Recoremos el espacio de juego 
+        for(var i = 0; i < jocTetris.espai.length; i++){
+            for(var j = 0; j < jocTetris.espai[i].length; j++){
+                //Donde haya un 1 lo ponemos a 0
+                if(jocTetris.espai[i][j] == 1){
+                    jocTetris.espai[i][j] = 0;
+                }
+            }
+        }
+
+        //Pintamos la pieza en el tablero 
+        jocTetris.pintarPiezaTablero();
+    },
+
     pintarPiezaTablero: function(){
         //Recorremos las filas de la pieza que bajara
         for(var i = 0; i < pecaBajando.forma.length; i++){
@@ -207,38 +224,6 @@ Peca.prototype.rotarAntiHorari = function(){
 
 //Funcion para hacer que la pieza baje
 Peca.prototype.moureAvall = function(){
-    tableroTetris(jocTetris.espai);
-    for(var i = 0; i < jocTetris.espai.length; i++){
-        for(var j = 0; j < jocTetris.espai[i].length; j++){
-            if(jocTetris.espai[i][j] == 1){
-                jocTetris.espai[i][j] = 0;
-            }
-        }
-    }
-    //Esto hara que la pieza se desplace hacia abajo
-    pecaBajando.posicioX++;
-    console.log(jocTetris.espai);
-
-    //Capturamos las teclas de las direcciones
-    //Serviran para mover la pieza segun la tecla presionada
-    window.addEventListener("keydown", function(event){
-        this.console.log(event);
-        switch(event.keyCode){
-            case "40": //Abajo
-                break;
-            case "39": //Derecha
-                break;
-            case "38": //Arriba
-                break;
-            case "37": //Izqueirda
-                break;
-        }
-        
-    });
-    
-    
-    //Pintamos la pieza en el tablero 
-    jocTetris.pintarPiezaTablero();
 
     
 }
