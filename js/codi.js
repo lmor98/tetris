@@ -1,3 +1,4 @@
+// Objecte on s'iniciarà tot el joc
 var jocTetris = {
     espai : [
         [0,0,0,0,0,0,0,0,0,0],
@@ -65,24 +66,32 @@ var jocTetris = {
         puntuacio = 0;
         var piezaAleatoria = GeneraPecaAleatoria();
         pecaBajando = new Peca(piezaAleatoria[0], piezaAleatoria[1], 0, 3);
-        piezaAleatoria = GeneraPecaAleatoria();
-        seguentPeca = new Peca(piezaAleatoria[0], piezaAleatoria[1], 20, 5);
+       
         comptadorPeca = 0;
         nivell = 0;
 
-        //Calcular de forma aleatoria la següent peça que baixara
-        //Gestio de la interacció del teclat
         //Moviment automatic que sera el intervalo de timepo que ira bajando la piez
         
         setInterval(function(){jocTetris.automatic();}, jocTetris.intervarlTemps);
 
     },
+    seguentPecaBajando: function(){
+        jocTetris.piezaAleatoria = GeneraPecaAleatoria();
+        jocTetris.pecaBajando = new Peca(piezaAleatoria[0], piezaAleatoria[1], 20, 5);
+    },
     automatic: function(){
-        //Hacemos que la pieza baje
-        pecaBajando.posicioX++;
+        var validacion = pecaBajando.validarPieza();
+        if(validacion == true){
+            //Hacemos que la pieza baje
+            pecaBajando.posicioX++;
+        }else{
+            jocTetris.seguentPeca();
+        }
 
         //Pintamos el tablero con el espacio
         tableroTetris(jocTetris.espai);
+
+        //jocTetris.validarPieza();
 
         //Recoremos el espacio de juego 
         for(var i = 0; i < jocTetris.espai.length; i++){
@@ -93,10 +102,29 @@ var jocTetris = {
                 }
             }
         }
+        
 
         //Pintamos la pieza en el tablero 
         jocTetris.pintarPiezaTablero();
     },
+    /*validarPieza: function(){
+        for(var i = 0; i < 4; i++){
+            for(var j = 0; j < 4; j++){
+                if(jocTetris.pecaBajando[i][j] = 1){
+                    if((jocTetris.pecaBajando.posicioX+i) < 0){
+                        return false;
+                    }
+                    if( ( (jocTetris.posicioX+i)<0) || ((jocTetris.pecaBajando.posicioY+j)>10)){
+                        return false;
+                    }
+                    if(jocTetris.espai[pecaBajando.posicioX+i][pecaBajando.posicioY+j]!=0){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    },*/
 
     pintarPiezaTablero: function(){
         //Recorremos las filas de la pieza que bajara
@@ -128,7 +156,10 @@ var Peca = function(forma, color, posicioX, posicioY){
 
 //Creamos una pieza
 var p = new Peca(GeneraPecaAleatoria()[0], GeneraPecaAleatoria()[1], 2, 20);
-//console.log(p);
+
+function colorPieza(){
+
+}
 
 //Creamos una variable donde guardaremos lo que nos devuelva la funcion para calcular de forma aleatoria la siguiente pieza
 function GeneraPecaAleatoria (){ 
@@ -147,6 +178,29 @@ function GeneraPecaAleatoria (){
     return peces[numeroAleatori];     
 }    
 
+Peca.prototype.validarPieza = function(){
+    
+    /*for(var i = 0; i < 4; i++){
+        for(var j = 0; j < 4; j++){
+            if(jocTetris.pecaBajando[i][j] == 1){
+                if(pecaBajando[i][j] == 24){
+                    return false;
+                }
+                if((pecaBajando.posicioX+i) < 0){
+                    return false;
+                }
+                if( ( (this.posicioX+i)<0) || ((this.pecaBajando.posicioY+j)>10)){
+                    return false;
+                }
+                if(jocTetris.espai[pecaBajando.posicioX+i][pecaBajando.posicioY+j]!=0){
+                    return false;
+                }
+                
+            }
+        }
+    }*/
+    return true;
+}
  
 //Funcion que desplazara la pieza a la derecha
 Peca.prototype.moverDerecha = function(){
