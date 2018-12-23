@@ -327,4 +327,8 @@ $(document).ready(function(){
             pecaBajando.rotarSentitHorari();
         }
     })
+
+    $("button").click(function(){
+        jocTetris.inicialitzar();
+    })
 });
