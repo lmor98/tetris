@@ -33,7 +33,7 @@ var jocTetris = {
     pecaBajando: new Array(),
     seguentPeca: new Array(),
     comptadorPeca: 0,
-    intervarlTemps: 500, //Falta ampliar
+    intervarlTemps: 1000, 
     inicialitzar: function(){
         //Inicializamos los atributos a 0 por si queremos reiniciar el juego
         espai = [
@@ -78,10 +78,10 @@ var jocTetris = {
 
     //Funció per a que baixi la seguent peça aleatoria
     seguentPecaBajando: function(){
-        console.log("llega");
         jocTetris.piezaAleatoria = GeneraPecaAleatoria();
         jocTetris.pecaBajando = new Peca(jocTetris.piezaAleatoria[0], jocTetris.piezaAleatoria[1], 5, 5);
         this.pintarPiezaTablero();
+
         //Pintamos el tablero con el espacio
         tableroTetris(jocTetris.espai);
     },
@@ -93,7 +93,6 @@ var jocTetris = {
             //Hacemos que la pieza baje
             pecaBajando.posicioX++;
         }else{
-            console.log("<<<<<<<<")
             jocTetris.seguentPecaBajando();
         }
 
@@ -134,12 +133,7 @@ var jocTetris = {
             }
         }
         tableroTetris(jocTetris.espai);
-    },
-
-    irAlaIzquierda: function(event){
-        console.log(event.keyCode);
-    },
-    irAlaDerecha: function(){}
+    }
 }
 
 //Creamos el objeto pieza
@@ -177,6 +171,7 @@ Peca.prototype.moureAvall = function(){
     if(pecaBajando.validarPieza() == true){
         this.posicioX++;
         jocTetris.puntuacio++;
+        punts(jocTetris.puntuacio);
     }
     
 }
@@ -275,6 +270,14 @@ function colorPieza(){
 
 }
 
+//Funcion que mostrara la puntuación del jugador
+function punts(puntuacio){
+    $("#puntuacion").empty();
+    //Pintamos la puntuación
+    var punts = $("#puntuacion");
+    punts.append("Puntuación: " + puntuacio++);
+}
+
 //Funcion que crea el tablero del tetris
 function tableroTetris(tablero){
     $("#tablero").empty();
@@ -293,12 +296,8 @@ $(document).ready(function(){
     jocTetris.inicialitzar();
     jocTetris.pintarPiezaTablero();
     tableroTetris(jocTetris.espai);
-    jocTetris.irAlaDerecha();
     
 
-    //Pintamos la puntuación
-    var punts = $("#puntuacion");
-    punts.append(jocTetris.puntuacio);
 
     //Pintamos la puntiación máxima
     var puntsMax = $("#puntuacionMax");
@@ -321,10 +320,10 @@ $(document).ready(function(){
         if(event.keyCode == 40){ //Flecha hacia abajo
             pecaBajando.moureAvall();
         }
-        if(event.keyCode == 76){ //Para girar la pieza al otro lado
+        if(event.keyCode == 76){ //Para girar la pieza al otro lado letra L
             pecaBajando.rotarAntiHorari();
         }
-        if(event.keyCode == 77){ //Para girar la pieza en setindo horario
+        if(event.keyCode == 77){ //Para girar la pieza en setindo horario letra M
             pecaBajando.rotarSentitHorari();
         }
     })
